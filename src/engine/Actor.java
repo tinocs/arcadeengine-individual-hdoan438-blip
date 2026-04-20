@@ -12,10 +12,17 @@ package engine;
 import javafx.scene.image.ImageView;
 
 public abstract class Actor extends ImageView {
+	
+	 private World world;
 
 	// ****************************************** CONSTRUCTOR ******************************************
 	public Actor() {
-		java.util.List<Actor> actors = new java.util.ArrayList<>();
+		parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent instanceof World) {
+                this.world = (World) newParent;
+                addedToWorld(); // now safe to call
+            }
+        });
 	}
 	
 	// ****************************************** METHOD ******************************************
@@ -35,10 +42,7 @@ public abstract class Actor extends ImageView {
 	 * @return the world this actor is in, or null if it is not in a world.
 	 */
 	public World getWorld() {
-		if (getParent() == null) {
-	        return null;
-	    }
-	    return (World) getParent();
+		return world;
 	}
 	
 	/**

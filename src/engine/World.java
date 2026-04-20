@@ -25,7 +25,7 @@ public abstract class World extends Pane {
 	private boolean setHeight; 
 	private boolean dimensionsInitialized;
 	private Set<KeyCode> keyPressed; 
-	private java.util.List<Actor> actors;
+	private java.util.List<Actor> actors = new java.util.ArrayList<>();
 	
 	// ****************************************** CONSTRUCTOR ******************************************
 	public World() {
@@ -136,7 +136,8 @@ public abstract class World extends Pane {
 	 * @param actor
 	 */
 	public void add(Actor actor) {
-		getChildren().add(actor); 
+		actors.add(actor);
+	    getChildren().add(actor);
 	}
 	
 	// ***************************** REMOVE *****************************
@@ -156,16 +157,15 @@ public abstract class World extends Pane {
 	 * @return
 	 */
 	public <A extends Actor> java.util.List<A> getObjects(java.lang.Class<A> cls){
-		java.util.List<A> result = new java.util.ArrayList<>();
+		 java.util.List<A> result = new java.util.ArrayList<>();
 
-	    for (Actor actor : actors) {
-	        if (actor != null && cls.isInstance(actor)) {
-	            result.add(cls.cast(actor));
+	        for (Actor actor : actors) {
+	            if (cls.isInstance(actor)) {
+	                result.add(cls.cast(actor));
+	            }
 	        }
-	    }
 
-	    return result;
-
+	        return result;
 	}
 	
 	// ***************************** GET OBJECTS AT *****************************
@@ -178,15 +178,15 @@ public abstract class World extends Pane {
 	 * @return
 	 */
 	public <A extends Actor> java.util.List<A> getObjectsAt(double x, double y, java.lang.Class<A> cls){
-		  java.util.List<A> result = new java.util.ArrayList<>();
+		java.util.List<A> result = new java.util.ArrayList<>();
 
-		    for (Actor actor : actors) { 
-		        if (cls.isInstance(actor) && actor.contains((int)x, (int)y)) {
-		            result.add(cls.cast(actor));
-		        }
-		    }
+	    for (Actor actor : actors) {
+	        if (cls.isInstance(actor) && actor.getBoundsInParent().contains(x, y)) {
+	            result.add(cls.cast(actor));
+	        }
+	    }
 
-		    return result;
+	    return result;
 	}
 	
 	// ***************************** IS KEY PRESSED *****************************
