@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
@@ -61,24 +62,20 @@ public abstract class World extends Pane {
 	        }
 	    });
 		
-		// *************************** NEED HELP ON ISKEYPRESSED ***************************
 		sceneProperty().addListener((obs, oldScene, newScene) -> {
 		    if (newScene != null) {
+		    	
+		    	Platform.runLater(() -> requestFocus());
 
-		        newScene.setOnKeyPressed(e -> {
+		        setOnKeyPressed(e -> {
 		            keyPressed.add(e.getCode());
 		        });
 
-		        newScene.setOnKeyReleased(e -> {
+		        setOnKeyReleased(e -> {
 		            keyPressed.remove(e.getCode());
-		        });
-
-		        javafx.application.Platform.runLater(() -> {
-		            newScene.getRoot().requestFocus();
 		        });
 		    }
 		});
-		// *************************** NEED HELP ON ISKEYPRESSED ***************************
 		
 		timer = new AnimationTimer() {
 
@@ -206,7 +203,6 @@ public abstract class World extends Pane {
 	}
 	
 	// ***************************** IS KEY PRESSED *****************************
-	// *************************** NEED HELP ON ISKEYPRESSED ***************************
 	/**
 	 * Returns true if the given key is pressed and false otherwise.
 	 * @param code
@@ -215,7 +211,6 @@ public abstract class World extends Pane {
 	public boolean isKeyPressed(javafx.scene.input.KeyCode code) {
 		 return keyPressed.contains(code);
 	}
-	// *************************** NEED HELP ON ISKEYPRESSED ***************************
 	
 	// ***************************** DIMENSION INITIALIZED *****************************
 	/**
