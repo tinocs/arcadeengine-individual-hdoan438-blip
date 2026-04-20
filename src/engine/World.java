@@ -61,20 +61,24 @@ public abstract class World extends Pane {
 	        }
 	    });
 		
-		this.keyPressed = new HashSet<>();
+		// *************************** NEED HELP ON ISKEYPRESSED ***************************
+		sceneProperty().addListener((obs, oldScene, newScene) -> {
+		    if (newScene != null) {
 
-		setFocusTraversable(true);
+		        newScene.setOnKeyPressed(e -> {
+		            keyPressed.add(e.getCode());
+		        });
 
-		setOnKeyPressed(e -> {
-		    keyPressed.add(e.getCode());
+		        newScene.setOnKeyReleased(e -> {
+		            keyPressed.remove(e.getCode());
+		        });
+
+		        javafx.application.Platform.runLater(() -> {
+		            newScene.getRoot().requestFocus();
+		        });
+		    }
 		});
-
-		setOnKeyReleased(e -> {
-		    keyPressed.remove(e.getCode());
-		});
-
-		requestFocus();
-		
+		// *************************** NEED HELP ON ISKEYPRESSED ***************************
 		
 		timer = new AnimationTimer() {
 
@@ -202,6 +206,7 @@ public abstract class World extends Pane {
 	}
 	
 	// ***************************** IS KEY PRESSED *****************************
+	// *************************** NEED HELP ON ISKEYPRESSED ***************************
 	/**
 	 * Returns true if the given key is pressed and false otherwise.
 	 * @param code
@@ -210,6 +215,7 @@ public abstract class World extends Pane {
 	public boolean isKeyPressed(javafx.scene.input.KeyCode code) {
 		 return keyPressed.contains(code);
 	}
+	// *************************** NEED HELP ON ISKEYPRESSED ***************************
 	
 	// ***************************** DIMENSION INITIALIZED *****************************
 	/**
