@@ -26,6 +26,7 @@ public abstract class World extends Pane {
 	private boolean dimensionsInitialized;
 	private Set<KeyCode> keyPressed; 
 	private java.util.List<Actor> actors = new java.util.ArrayList<>();
+	int frameCount = 0; 
 	
 	// ****************************************** CONSTRUCTOR ******************************************
 	public World() {
@@ -60,32 +61,35 @@ public abstract class World extends Pane {
 	        }
 	    });
 		
-		sceneProperty().addListener((observable, oldScene, newScene) -> {
-			
-			
-			if (newScene != null) {
-				requestFocus();
-				
-                newScene.setOnKeyPressed(e -> {
-                	keyPressed.add(e.getCode());
-                });
+		this.keyPressed = new HashSet<>();
 
-                newScene.setOnKeyReleased(e -> {
-                	keyPressed.remove(e.getCode());
-                });
-			}
-			
-		}); 
+		setFocusTraversable(true);
+
+		setOnKeyPressed(e -> {
+		    keyPressed.add(e.getCode());
+		});
+
+		setOnKeyReleased(e -> {
+		    keyPressed.remove(e.getCode());
+		});
+
+		requestFocus();
+		
 		
 		timer = new AnimationTimer() {
 
 			@Override
 			public void handle(long now) {
 				
+				frameCount++;
+				
+				act(now);
+				
 				for (Actor actor : new ArrayList<>(actors)) {
 					
 		            if (actors.contains(actor)) {
-		            	act(now); 
+		            	actor.incrementFrameCount();
+		            	actor.act(now);
 		            }
 		        }
 				
@@ -95,8 +99,8 @@ public abstract class World extends Pane {
 		
 	}
 	
-	// ****************************************** METHOD ******************************************
-	
+	// ****************************************** METHOD *****************************************
+
 	// ***************************** START *****************************
 	/**
 	 * STARTS the timer that calls the act method on the world 
@@ -138,6 +142,9 @@ public abstract class World extends Pane {
 	public void add(Actor actor) {
 		actors.add(actor);
 	    getChildren().add(actor);
+	    
+	    actor.world = this; 
+	    actor.addedToWorld(); 
 	}
 	
 	// ***************************** REMOVE *****************************
@@ -201,11 +208,7 @@ public abstract class World extends Pane {
 	 * @return
 	 */
 	public boolean isKeyPressed(javafx.scene.input.KeyCode code) {
-		if (keyPressed.contains(code)) {
-			return true;
-		}
-		
-		return false; 
+		 return keyPressed.contains(code);
 	}
 	
 	// ***************************** DIMENSION INITIALIZED *****************************
