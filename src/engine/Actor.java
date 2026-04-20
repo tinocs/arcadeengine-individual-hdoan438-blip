@@ -75,9 +75,11 @@ public abstract class Actor extends ImageView {
 		        return result;
 		    }
 
-		    for (Actor a : world.getObjects(cls)) {
-		        if (a != this && a.intersects(this.getBoundsInParent())) {
-		            result.add(cls.cast(a));
+		    for (Actor a : world.getObjects(Actor.class)) {
+		        if (a != this && cls.isInstance(a)) {
+		            if (a.getBoundsInParent().intersects(this.getBoundsInParent())) {
+		                result.add(cls.cast(a));
+		            }
 		        }
 		    }
 
