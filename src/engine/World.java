@@ -113,7 +113,7 @@ public abstract class World extends Pane {
 	 * and on each Actor in the world each frame.
 	 */
 	public void stop() {
-		timer.stop(); 	
+		timer.stop(); 
 		isTimeRun = false; 
 	}
 	
@@ -123,10 +123,10 @@ public abstract class World extends Pane {
 	 */
 	public boolean isStopped() {
 		if (isTimeRun) {
-			return true;
+			return false;
 		}
 		
-		return false; 
+		return true; 
 	}
 	
 	// ***************************** ADD *****************************
@@ -146,7 +146,12 @@ public abstract class World extends Pane {
 	 * @param actor
 	 */
 	public void remove(Actor actor) {
+		if (actor == null) return;
+		
+		actors.remove(actor);
 		getChildren().remove(actor); 
+		
+		actor.world = null;
 	}
 	
 	// ***************************** GET OBJECTS *****************************

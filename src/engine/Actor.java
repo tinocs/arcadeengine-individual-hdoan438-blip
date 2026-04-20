@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
 
 public abstract class Actor extends ImageView {
 	
-	 private World world;
+	 World world;
 
 	// ****************************************** CONSTRUCTOR ******************************************
 	public Actor() {
@@ -50,7 +50,7 @@ public abstract class Actor extends ImageView {
 	 * @return The width of the current image of this actor
 	 */
 	public double getWidth() {
-		 return getBoundsInLocal().getWidth();
+		 return getBoundsInParent().getWidth();
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public abstract class Actor extends ImageView {
 	 * @return The height of the current image of this actor
 	 */
 	public double getHeight() {
-		 return getBoundsInLocal().getHeight();
+		return getBoundsInParent().getHeight();
 	}
 	
 	/**
