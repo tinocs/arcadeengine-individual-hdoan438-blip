@@ -25,6 +25,7 @@ public class Ball extends Actor {
 	public void act(long now) {
 		this.move(dx, dy);
 		
+		// ***************** BOUNCE *****************
 		if (getX() <= 0 || getX() + getFitWidth() >= getWidth()) {
 			dx *= -1;
 		}
@@ -33,10 +34,31 @@ public class Ball extends Actor {
 			dy *= -1;
 		}
 		
+		// ***************** PADDLE *****************
 		for (Paddle paddle : getWorld().getObjects(Paddle.class)) {
 	        if (this.intersects(paddle.getBoundsInParent())) {
 
 	            dy *= -1;
+	        }
+	    }
+		
+		// ***************** BRICK *****************
+		for (Brick brick : getWorld().getObjects(Brick.class)) {
+	        if (this.intersects(brick.getBoundsInParent())) {
+
+	        	if (this.getX() >= brick.getX() && this.getX() <= brick.getX() + brick.getFitWidth()) {
+	        		dy *= -1;
+	        	}
+	        	else if (this.getY() >= brick.getY() && this.getY() <= brick.getY() + brick.getFitHeight()) {
+	        		dx *= -1;
+	        	}
+	        	else {
+	        		dy *= -1;
+	        		dx *= -1;
+	        	}
+	        	
+	        	getWorld().remove(brick); 
+
 	        }
 	    }
 	}

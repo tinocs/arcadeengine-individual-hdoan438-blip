@@ -6,6 +6,9 @@ import javafx.scene.input.MouseEvent;
 
 public class BallWorld extends World {
 
+	// ******************************** ATTRIBUTES ******************************** 
+	Score score; 
+	
 	public BallWorld() {
 		setPrefSize(800, 600);
 	}
