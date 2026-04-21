@@ -9,4 +9,9 @@ public class Brick extends Actor{
 		Image img = new Image(path);
 		this.setImage(img);
 	}
+
+	@Override
+	public void act(long now) {
+		
+	}
 }
