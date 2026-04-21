@@ -13,7 +13,8 @@ public class Ball extends Actor {
 	public Ball() {
 		this.dx = 5;
 		this.dy = 5;
-		String path = getClass().getClassLoader().getResource("resources/fireBall.png").toString();
+		String path = getClass().getClassLoader().getResource("breakoutresources/ball.png").toString();
+
 		Image img = new Image(path);
 		this.setImage(img);
 	}
@@ -24,13 +25,20 @@ public class Ball extends Actor {
 	public void act(long now) {
 		this.move(dx, dy);
 		
-		if (this.getX() <= 0 || this.getX() + this.getFitWidth() >= getWidth()) {
+		if (getX() <= 0 || getX() + getFitWidth() >= getWidth()) {
 			dx *= -1;
 		}
 		
-		if (this.getY() <= 0 || this.getY() + this.getFitHeight() >= getHeight()) {
+		if (getY() <= 0 || getY() + getFitHeight() >= getHeight()) {
 			dy *= -1;
 		}
+		
+		for (Paddle paddle : getWorld().getObjects(Paddle.class)) {
+	        if (this.intersects(paddle.getBoundsInParent())) {
+
+	            dy *= -1;
+	        }
+	    }
 	}
 	
 }
