@@ -61,6 +61,22 @@ public class Ball extends Actor {
 
 	        }
 	    }
+		
+		// ***************** SCORE *****************
+		Brick brick = getOneIntersectingObject(Brick.class);
+		
+		if (brick != null) {
+		    BallWorld world = (BallWorld) getWorld();
+		    world.setScore(world.getScore() + 100);
+
+		    getWorld().removeObject(brick); 
+		}
+		
+		if (getY() >= getWorld().getHeight() - 1) {
+			BallWorld world = (BallWorld) getWorld();
+			world.setScore(world.getScore() - 1000);
+		}
+		
 	}
 	
 }

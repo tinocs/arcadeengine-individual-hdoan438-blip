@@ -21,6 +21,7 @@ public class BallWorld extends World {
 
 	@Override
 	public void onDimensionsInitialized() {
+		
 		Ball ball = new Ball();
 		Paddle paddle = new Paddle(); 
 		
@@ -44,8 +45,17 @@ public class BallWorld extends World {
 		    }
 		});
 		
+		score = new Score(); 
+		
+		score.setX(centerX);
+		score.setX(centerY);
+		
+		this.getChildren().add(score); 
 
 	}
 
+	public Score getScore() {
+		return score; 
+	}
 	
 }
