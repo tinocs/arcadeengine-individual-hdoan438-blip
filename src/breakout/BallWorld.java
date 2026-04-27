@@ -76,13 +76,18 @@ public class BallWorld extends World {
 		Text message = new Text(won ? "YOU WIN THE GAME!" : "GAME OVER");
 		message.setFont(new Font(100));
 		this.getChildren().add(message); 
-		this.requestFocus();
 		
-		this.requestFocus();
-		
-		this.setOnKeyPressed(e -> {
-			// NEED HELP: TAKE THE USER BACK TO THE MAIN MENU 
-		});
+		Text subMessage = new Text("Press SPACE to return to Menu");
+	    subMessage.setFont(new Font(50));
+	    
+	    this.getChildren().addAll(message, subMessage);
+	    
+	    this.setOnKeyPressed(e -> {
+	        if (e.getCode() == KeyCode.SPACE) {
+	        	// return to main menu 
+	        }
+	    });
+	    
 	}
 
 	@Override
@@ -147,7 +152,10 @@ public class BallWorld extends World {
 	        gameOver(false);
 	        Sound lose = new Sound("ballbounceresources/game_lost.wav");
 			lose.play(); 
+			gameOver(false);
 		}
+		
+		
 	}
 	
 }
