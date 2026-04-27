@@ -11,8 +11,8 @@ public class Ball extends Actor {
 	
 	// ****************************************** CONSTRUCTOR ******************************************
 	public Ball() {
-		this.dx = 5;
-		this.dy = 5;
+		this.dx = 2;
+		this.dy = 2;
 		String path = getClass().getClassLoader().getResource("breakoutresources/ball.png").toString();
 
 		Image img = new Image(path);
@@ -26,11 +26,11 @@ public class Ball extends Actor {
 		this.move(dx, dy);
 		
 		// ***************** BOUNCE *****************
-		if (getX() <= 0 || getX() + getFitWidth() >= getWidth()) {
+		if (getX() <= 0 || getX() + this.getWidth() >= getWorld().getWidth()) {
 			dx *= -1;
 		}
 		
-		if (getY() <= 0 || getY() + getFitHeight() >= getHeight()) {
+		if (getY() <= 0 || getY() + this.getHeight() >= getWorld().getHeight()) {
 			dy *= -1;
 		}
 		
@@ -67,14 +67,17 @@ public class Ball extends Actor {
 		
 		if (brick != null) {
 		    BallWorld world = (BallWorld) getWorld();
-		    world.setScore(world.getScore() + 100);
+		    int current = world.score.getScore();
+		    world.score.setScore(current + 100);
+		    
 
-		    getWorld().removeObject(brick); 
+		    getWorld().remove(brick); 
 		}
 		
 		if (getY() >= getWorld().getHeight() - 1) {
 			BallWorld world = (BallWorld) getWorld();
-			world.setScore(world.getScore() - 1000);
+			int current = world.score.getScore();
+		    world.score.setScore(current - 1000);
 		}
 		
 	}

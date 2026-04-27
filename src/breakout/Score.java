@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 public class Score extends Text {
 
 	// ******************************** ATTRIBUTES ******************************** 
-	private int score; 
+	private int score;
 	
 	// ******************************** CONSTRUCTOR ******************************** 
 	public Score() {
@@ -25,6 +25,7 @@ public class Score extends Text {
 	}
 	
 	public void setScore(int value) {
+		System.out.println("Score updating to: " + value);
 		this.score = value; 
 		updateDisplay(); 
 	}
