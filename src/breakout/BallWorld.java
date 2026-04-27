@@ -27,23 +27,20 @@ public class BallWorld extends World {
 				gameOver(true); 
 			}
 			else {
-				createBricks(); 
+				int count = (level == 1) ? 5 : 10; 
+				for (int i = 0; i < count; i++) {
+					Brick brick = new Brick(); 
+					this.add(brick);
+					int x = (int) (Math.random() * (this.getWidth() - brick.getWidth()));
+					int y = (int) (Math.random() * (this.getHeight() / 2 - brick.getHeight()));
+					brick.setX(x);
+					brick.setY(y); 
+				}
 			}
 		}
 		
 	}
-	
-	public void createBricks() {
-		int count = (level == 1) ? 1 : 1; 
-		for (int i = 0; i < count; i++) {
-			Brick brick = new Brick(); 
-			this.add(brick);
-			int x = (int) (Math.random() * (this.getWidth() - brick.getWidth()));
-			int y = (int) (Math.random() * (this.getHeight() / 2 - brick.getHeight()));
-			brick.setX(x);
-			brick.setY(y); 
-		}
-	}
+
 	
 	private void gameOver(boolean won) {
 		stop(); 
@@ -55,7 +52,7 @@ public class BallWorld extends World {
 		this.requestFocus();
 		
 		this.setOnKeyPressed(e -> {
-			System.exit(0);
+			// NEED HELP: TAKE THE USER BACK TO THE MAIN MENU 
 		});
 	}
 
