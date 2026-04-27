@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -13,6 +14,9 @@ public class BallWorld extends World {
 	// ******************************** ATTRIBUTES ******************************** 
 	Score score; 
 	int level = 1; 
+	int lives = 3; 
+	boolean isPaused = true; 
+	private Text pausedMessage;
 	
 	public BallWorld() {
 		setPrefSize(800, 600);
@@ -38,6 +42,28 @@ public class BallWorld extends World {
 				}
 			}
 		}
+		
+		this.setOnKeyPressed(e -> {
+		    if (e.getCode() == KeyCode.SPACE && isPaused) {
+		    	isPaused = false;
+		    	this.start();
+		    	
+		    	if (pausedMessage != null) {
+		            this.getChildren().remove(pausedMessage);
+		            pausedMessage = null;
+		    	}
+		    }
+		    else if (e.getCode() == KeyCode.SPACE && !isPaused) {
+		    	isPaused = true;
+		    	this.stop(); 
+		    	
+		    	pausedMessage = new Text("PRESS SPACE TO RESUME");
+		    	pausedMessage.setFont(new Font(40));
+		    	pausedMessage.setX(this.getWidth() / 2);
+		    	pausedMessage.setY(this.getHeight() / 2);
+		    	this.getChildren().add(pausedMessage);
+		    }
+		});
 		
 	}
 
@@ -94,6 +120,14 @@ public class BallWorld extends World {
 
 	public Score getScore() {
 		return score; 
+	}
+	
+	public void setPaused(boolean pause) {
+		this.isPaused = pause; 
+	}
+	
+	public boolean getPaused() {
+		return this.isPaused; 
 	}
 	
 }

@@ -11,8 +11,8 @@ public class Ball extends Actor {
 	
 	// ****************************************** CONSTRUCTOR ******************************************
 	public Ball() {
-		this.dx = 2;
-		this.dy = 2;
+		this.dx = 5;
+		this.dy = 5;
 		String path = getClass().getClassLoader().getResource("breakoutresources/ball.png").toString();
 
 		Image img = new Image(path);
@@ -78,6 +78,18 @@ public class Ball extends Actor {
 			BallWorld world = (BallWorld) getWorld();
 			int current = world.score.getScore();
 		    world.score.setScore(current - 1000);
+		}
+		
+		// ***************** PAUSED *****************
+		if (((BallWorld)getWorld()).getPaused()) {
+			if (!getWorld().getObjects(Paddle.class).isEmpty()) {
+				Paddle paddle = getWorld().getObjects(Paddle.class).get(0);
+				this.setX(paddle.getX() + (paddle.getWidth() / 2) - (this.getWidth() / 2));
+	            this.setY(paddle.getY() - this.getHeight());
+			}
+		}
+		else {
+			this.move(dx, dy); 
 		}
 		
 	}
