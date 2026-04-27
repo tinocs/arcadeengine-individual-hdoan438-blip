@@ -1,5 +1,6 @@
 package breakout;
 import engine.Actor;
+import engine.Sound;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;	
 
@@ -8,6 +9,9 @@ public class Ball extends Actor {
 	// ****************************************** ATTRIBUTES ****************************************** 
 	double dx;
 	double dy; 
+	private Sound bounceSound;
+	private Sound hitSound;
+	private Sound looseLife; 
 	
 	// ****************************************** CONSTRUCTOR ******************************************
 	public Ball() {
@@ -17,6 +21,10 @@ public class Ball extends Actor {
 
 		Image img = new Image(path);
 		this.setImage(img);
+		
+		bounceSound = new Sound("ballbounceresources/ball_bounce.wav");
+		hitSound = new Sound("ballbounceresources/brick_hit.wav");
+		looseLife = new Sound("ballbounceresources/lose_life.wav");
 	}
 	
 	// ****************************************** METHODS ******************************************
@@ -28,10 +36,12 @@ public class Ball extends Actor {
 		// ***************** BOUNCE *****************
 		if (getX() <= 0 || getX() + this.getWidth() >= getWorld().getWidth()) {
 			dx *= -1;
+			bounceSound.play(); 
 		}
 		
 		if (getY() <= 0 || getY() + this.getHeight() >= getWorld().getHeight()) {
 			dy *= -1;
+			bounceSound.play(); 
 		}
 		
 		// ***************** PADDLE *****************
@@ -45,7 +55,9 @@ public class Ball extends Actor {
 		// ***************** BRICK *****************
 		for (Brick brick : getWorld().getObjects(Brick.class)) {
 	        if (this.intersects(brick.getBoundsInParent())) {
-
+	        	
+	        	hitSound.play(); 
+	        	
 	        	if (this.getX() >= brick.getX() && this.getX() <= brick.getX() + brick.getFitWidth()) {
 	        		dy *= -1;
 	        	}
@@ -81,7 +93,7 @@ public class Ball extends Actor {
 		}
 		
 		// ***************** PAUSED *****************
-		if (((BallWorld)getWorld()).getPaused()) {
+		if (((BallWorld) this.getWorld()).getPaused()) {
 			if (!getWorld().getObjects(Paddle.class).isEmpty()) {
 				Paddle paddle = getWorld().getObjects(Paddle.class).get(0);
 				this.setX(paddle.getX() + (paddle.getWidth() / 2) - (this.getWidth() / 2));
@@ -90,6 +102,13 @@ public class Ball extends Actor {
 		}
 		else {
 			this.move(dx, dy); 
+		}
+		
+		// ***************** BOTTOM OF THE WORLD & LIVES *****************
+		if (getY() >= getWorld().getHeight() - 1) {
+			looseLife.play(); 
+			BallWorld world = (BallWorld) this.getWorld();
+			world.ballLost();
 		}
 		
 	}

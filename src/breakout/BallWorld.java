@@ -1,4 +1,5 @@
 package breakout;
+import engine.Sound;
 import engine.World;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -29,6 +30,8 @@ public class BallWorld extends World {
 			level++; 
 			if (level > 2) {
 				gameOver(true); 
+				Sound win = new Sound("ballbounceresources/game_won.wav");
+				win.play(); 
 			}
 			else {
 				int count = (level == 1) ? 5 : 10; 
@@ -128,6 +131,23 @@ public class BallWorld extends World {
 	
 	public boolean getPaused() {
 		return this.isPaused; 
+	}
+	
+	public void setLifes(int life) {
+		this.lives = life; 
+	}
+	
+	public int getLifes() {
+		return this.lives;
+	}
+	
+	public void ballLost() {
+		this.lives--;
+		if (lives <= 0) {
+	        gameOver(false);
+	        Sound lose = new Sound("ballbounceresources/game_lost.wav");
+			lose.play(); 
+		}
 	}
 	
 }
